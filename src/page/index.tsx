@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Switch,
   Route,
 } from "react-router-dom";
@@ -10,20 +10,18 @@ import About from "@view/About";
 import Common from '@compoment/Common';
 
 const App = () => (
-  <Router>
+  <BrowserRouter>
     <Common>
       <Switch>
-
         <Route path="/about">
           <About />
         </Route>
         <Route path="/">
           <Home />
-          <About />
         </Route>
       </Switch>
     </Common>
-  </Router>
+  </BrowserRouter>
 );
 
 ReactDOM.render(
