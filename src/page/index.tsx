@@ -9,6 +9,8 @@ import Home from "@view/Home";
 import About from "@view/About";
 import Common from '@compoment/Common';
 
+require('./base.scss');
+
 const App = () => (
   <BrowserRouter>
     <Common>

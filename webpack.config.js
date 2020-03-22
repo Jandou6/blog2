@@ -1,12 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const ENTRY_PATH = path.resolve(__dirname, './src/page/index.tsx');
 const OUTPUT_PATH = path.resolve(__dirname, './dist');
 
 const isProdEnv = process.env.NODE_ENV === "production";
-
 
 module.exports = {
   entry: ENTRY_PATH,
@@ -15,7 +15,8 @@ module.exports = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json", '.scss'],
+    modules: [path.resolve(__dirname, 'node_modules')],
+    extensions: [".ts", ".tsx", ".js", ".json", '.scss', '.css'],
     alias: {
       '@view': path.resolve(__dirname, './src/view'),
       '@compoment': path.resolve(__dirname, './src/compoment'),
@@ -23,20 +24,50 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+
+      {
+        test: /\.(jsx|tsx|js|ts)$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          getCustomTransformers: () => ({
+            before: [tsImportPluginFactory({
+              libraryName: 'antd',
+              libraryDirectory: 'lib',
+              style: 'css',
+            })]
+          }),
+          compilerOptions: {
+            module: 'es2015'
+          }
+        },
+        exclude: /node_modules/
+      },
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
-        test: /\.scss$/,
+        test: /\.css$/i,
+        include: /node_modules/,
+        use: [!isProdEnv ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+
+      {
+        test: /\.(sa|sc|c)ss$/,
+        exclude: /node_modules/,
         use: [
-          MiniCssExtractPlugin.loader,
+          !isProdEnv ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
-              modules: true,
-            }
-          }, {
-            loader: "sass-loader"
-          }],
+              modules: {
+                mode: 'local',
+                localIdentName: '[local]--[hash:base64:5]',
+                context: path.resolve(__dirname, './src'),
+              },
+            },
+          },
+          // 'postcss-loader',
+          'sass-loader',
+        ],
       }
     ]
   },

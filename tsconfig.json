@@ -6,10 +6,14 @@
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
-    "baseUrl": ".", // This must be specified if "paths" is.
+    "baseUrl": ".",
     "paths": {
-      "@view/*": ["./src/view/*"],
-      "@compoment/*": ["./src/compoment/*"]
+      "@view/*": [
+        "./src/view/*"
+      ],
+      "@compoment/*": [
+        "./src/compoment/*"
+      ]
     }
   },
   "include": [
