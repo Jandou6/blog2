@@ -15,7 +15,7 @@ export default (props: IProps) => {
       <header className={style.header}>
         <Menu
           mode="horizontal"
-          defaultSelectedKeys={['2']}
+          defaultSelectedKeys={['1']}
         >
           <Menu.Item key="1">
             <Link to='/'>
@@ -23,7 +23,7 @@ export default (props: IProps) => {
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to='/'>
+            <Link to='/tool'>
               小玩具
           </Link>
           </Menu.Item>

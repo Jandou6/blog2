@@ -19,6 +19,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".json", '.scss', '.css'],
     alias: {
       '@view': path.resolve(__dirname, './src/view'),
+      '@hook': path.resolve(__dirname, './src/hook'),
       '@compoment': path.resolve(__dirname, './src/compoment'),
     }
   },
@@ -46,12 +47,11 @@ module.exports = {
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.css$/i,
-        include: /node_modules/,
         use: [!isProdEnv ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
       },
 
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.(sa|sc)ss$/,
         exclude: /node_modules/,
         use: [
           !isProdEnv ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -81,6 +81,7 @@ module.exports = {
     compress: true,
     port: 9000,
     index: 'index.html',
+    historyApiFallback: true,
   },
   plugins: [
     new MiniCssExtractPlugin(),
